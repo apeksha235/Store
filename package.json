@@ -8,9 +8,36 @@
     "express-fileupload": "^1.4.0",
     "jsonwebtoken": "^8.5.1",
     "mongoose": "^6.4.0",
+    "morgan": "^1.10.0",
     "nodemailer": "^6.7.5",
     "razorpay": "^2.8.1",
     "stripe": "^9.10.0",
     "validator": "^13.7.0"
-  }
+  },
+  "devDependencies": {
+    "nodemon": "^2.0.18"
+  },
+  "name": "store",
+  "description": "Backend app for online store",
+  "version": "1.0.0",
+  "main": "index.js",
+  "scripts": {
+    "start": "nodemon index.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/hrishik18/Store.git"
+  },
+  "keywords": [
+    "store",
+    "express",
+    "mongoose",
+    "nodemailer"
+  ],
+  "author": "Hrishik Sancheti",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/hrishik18/Store/issues"
+  },
+  "homepage": "https://github.com/hrishik18/Store#readme"
 }
