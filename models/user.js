@@ -23,7 +23,7 @@ const userschema = new Schema({
         type: String,
         required: ['true', "Password can't be empty"],
         minlength: [6, "Password should be min 6 characters"],
-        validate: [validator.isStrongPassword([password, minlength = 6]), "Please enter a correct Email"],
+        //validate: [validator.isStrongPassword([password, minlength = 6]), "Please enter a correct Email"],
         select: false,
     },
     role: {
@@ -41,11 +41,13 @@ const userschema = new Schema({
             required: true
         }
     },
-    createdAt:{
-        type:Date,
-        default: Date.now
-    }
+    createdAt: {
+        type: Date,
+        default: Date.now()
+    },
     //forgot password token 
+    forgotpasstoken:String,
+    forgotpass_expiry: Date,
 
 })
 
@@ -53,22 +55,29 @@ userschema.methods.passVal = async function (upassword) {
     return await bcrypt.compare(upassword, this.password);
 }
 
-userschema.pre('save',async function(next){
+userschema.pre('save', async function (next) {
     if (!this.isModified('password')) return next();
-    this.password= await bcrypt.hash(this.password,10)
+    this.password = await bcrypt.hash(this.password, 10)
 });
 
-userschema.methods.createjwt = async function(){
+userschema.methods.createjwt = async function () {
     return await jwt.sign({
-        userid: userschema._id},
+        userid: userschema._id
+    },
         process.env.JWT_CODE,
-        {expiresIn:process.env.JWT_E
+        {
+            expiresIn: process.env.JWT_E
         });
 }
 
 // forgot password token 
-userschema.methods.FPtoken = async function(){
-    var ft = crypto.randomBytes(20).toString('hex');
+userschema.methods.FPtoken = async function () {
+    var fpts = crypto.randomBytes(20).toString('hex'); // random string //send user
+
+    const ftpt = crypto.createHash('sha256').update(fpts).digest('hex');//hash // store in db
+
+    this.forgotpass_expiry = Date.now() + 20 * 60 * 60 * 1000;
+    return ftpt;
 }
 
 module.exports = mongoose.model('users', userschema);
