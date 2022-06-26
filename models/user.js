@@ -34,11 +34,9 @@ const userschema = new Schema({
     dp: {
         id: {
             type: String,
-            required: true
         },
         secureUrl: {
             type: String,
-            required: true
         }
     },
     createdAt: {
